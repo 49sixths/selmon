@@ -80,6 +80,12 @@ function checkNow(callback) {
 		if (typeof cb == 'function') {
 			callback();
 		}
+
+		setTimeout(checkNow, CHECK_TIMER);
+	}).catch(err => {
+		if (typeof cb == 'function') {
+			callback();
+		}
 		
 		setTimeout(checkNow, CHECK_TIMER);
 	});
