@@ -71,14 +71,14 @@ function checkNow(callback) {
 		const $ = cheerio.load(res.data);
 		if ($(process.env.SELECTOR).length > 0) {
 			log('POSITIVE');
-			if (currentState === false) {
+			if (currentState !== true) {
 				discChan.send('Selector matched');
 				log('Selector matched');
 			}
 			currentState = true;
 		} else {
 			log('NEGATIVE');
-			if (currentState === true) {
+			if (currentState !== false) {
 				log('Selector no longer matches');
 			}
 			currentState = false;
