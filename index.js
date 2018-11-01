@@ -57,7 +57,7 @@ discClient.on('ready', () => {
 discClient.on('message', msg => {
 	if (msg.content === 'ping') {
 		const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
-		msg.reply(`\n__Timestamp:__ ${timestamp}\n__Last Entry:__ ${lastLog}\n__`);
+		msg.reply(`\n**Timestamp:** ${timestamp}\n**Last Entry:** ${lastLog}`);
 	}
 });
 
