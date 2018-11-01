@@ -27,7 +27,7 @@ const app = require('express')();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-let lastLog = null;
+let lastLog, discChan;
 
 app.get('/', (req, res) => {
 	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
