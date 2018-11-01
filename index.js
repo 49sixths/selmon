@@ -54,6 +54,13 @@ discClient.on('ready', () => {
 	});
 });
 
+client.on('message', msg => {
+	if (msg.content === 'ping') {
+		const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
+		msg.reply(`\n__Timestamp:__ ${timestamp}\n__\n__Last Entry:__ ${lastLog}\n__`);
+	}
+});
+
 discClient.login(process.env.DISCORD_CLIENT_ID);
 
 let currentState = null;
