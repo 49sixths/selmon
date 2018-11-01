@@ -1,0 +1,18 @@
+{
+  "name": "selmon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:49sixths/selmon.git",
+  "author": "Sixths <49sixths@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "chcp 65001 & node index.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "discord.js": "^11.4.2",
+    "express": "^4.16.4",
+    "luxon": "^1.4.5"
+  }
+}
