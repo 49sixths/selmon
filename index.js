@@ -79,6 +79,7 @@ function checkNow(callback) {
 		} else {
 			log('NEGATIVE');
 			if (currentState !== false) {
+				discChan.send('Selector no longer matches');
 				log('Selector no longer matches');
 			}
 			currentState = false;
