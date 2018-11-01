@@ -18,9 +18,18 @@ const cheerio = require('cheerio');
 const {DateTime} = require('luxon');
 const Discord = require('discord.js');
 const discClient = new Discord.Client();
+const app = require('express')();
 
 // Magic /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+
+app.get('/', (req, res) => {
+	res.send('Listening');
+});
+
+app.listen(process.env.PORT || 8081, () => {
+	console.log(`Webserver listening on port ${process.env.PORT || 8081}`);
+})
 
 function log(msg) {
 	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
