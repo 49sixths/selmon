@@ -13,6 +13,7 @@ const CHECK_TIMER = 1000 * (parseInt(process.env.CHECK_TIMER) || 300); // Timer 
 // Libraries /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
+const path = require('path');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const {DateTime} = require('luxon');
@@ -23,17 +24,20 @@ const app = require('express')();
 // Magic /////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
-app.get('/', (req, res) => {
-	res.send('Listening');
-});
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
-app.listen(process.env.PORT || 8081, () => {
-	console.log(`Webserver listening on port ${process.env.PORT || 8081}`);
-})
+let lastLog = null;
+
+app.get('/', (req, res) => {
+	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
+	res.render('index', { lastLog, timestamp });
+});
 
 function log(msg) {
 	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
 	console.log(msg, timestamp)
+	lastLog = `${msg} ${timestamp}`;
 }
 
 discClient.on('ready', () => {
@@ -43,14 +47,19 @@ discClient.on('ready', () => {
 		}
 	});
 
-	checkNow();
+	checkNow(() => {
+		app.listen(process.env.PORT || 8081, () => {
+			console.log(`Webserver listening on port ${process.env.PORT || 8081}`);
+		});
+	});
 });
 
 discClient.login(process.env.DISCORD_CLIENT_ID);
 
 let currentState = null;
 
-function checkNow() {
+function checkNow(callback) {
+	const cb = callback;
 	axios.get(process.env.URL).then(res => {
 		const $ = cheerio.load(res.data);
 		if ($(process.env.SELECTOR).length > 0) {
@@ -66,6 +75,10 @@ function checkNow() {
 				log('Selector no longer matches');
 			}
 			currentState = false;
+		}
+
+		if (typeof cb == 'function') {
+			callback();
 		}
 	});
 
