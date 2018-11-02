@@ -1,12 +1,16 @@
 {
   "name": "selmon",
+  "description": "Monitor a DOM selector on a specific URL and get notified for changes in the result",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:49sixths/selmon.git",
   "author": "Sixths <49sixths@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "chcp 65001 & node index.js"
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "8.x"
   },
   "dependencies": {
     "axios": "^0.18.0",

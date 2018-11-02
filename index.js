@@ -27,28 +27,29 @@ const app = require('express')();
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
-let lastLog, discChan;
+let lastLog, discChan, startTime;
 
 app.get('/', (req, res) => {
-	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
-	res.render('index', { lastLog, timestamp });
+	const timestamp = DateTime.local().setZone(process.env.TIMEZONE);
+	res.render('index', { lastLog, timestamp, startTime });
 });
 
 function log(msg) {
-	const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
+	const timestamp = DateTime.local().setZone(process.env.TIMEZONE).toFormat('yyyy-MM-dd HH:mm:ss');
 	console.log(msg, timestamp)
 	lastLog = `${msg} ${timestamp}`;
 }
 
 discClient.on('ready', () => {
 	discClient.channels.forEach(chan => {
-		if (chan.name == 'test') {
+		if (chan.name == process.env.DISCORD_CHANNEL) {
 			discChan = chan;
 		}
 	});
 
 	checkNow(() => {
 		app.listen(process.env.PORT || 8081, () => {
+      startTime = DateTime.local().setZone(process.env.TIMEZONE);
 			console.log(`Webserver listening on port ${process.env.PORT || 8081}`);
 		});
 	});
@@ -56,8 +57,11 @@ discClient.on('ready', () => {
 
 discClient.on('message', msg => {
 	if (msg.content === 'ping') {
-		const timestamp = DateTime.local().toFormat('yyyy-MM-dd HH:mm:ss');
-		msg.reply(`\n**Timestamp:** ${timestamp}\n**Last Entry:** ${lastLog}`);
+		const timestamp = DateTime.local().setZone(process.env.TIMEZONE);
+		msg.reply(`
+**Timestamp:** ${timestamp.toFormat('yyyy-MM-dd HH:mm:ss')}
+**Last Entry:** ${lastLog}
+**Running since:** ${startTime.toFormat('yyyy-MM-dd HH:mm:ss')}`);
 	}
 });
 

@@ -8,7 +8,10 @@ html(lang="en")
 	body(style="font-family:sans-serif;")
 		div
 			b Timestamp: 
-			=timestamp
+			=timestamp.toFormat('yyyy-MM-dd HH:mm:ss')
 		div
 			b Last entry: 
 			=lastLog
+		div
+			b Running since: 
+			=startTime.toFormat('yyyy-MM-dd HH:mm:ss')
