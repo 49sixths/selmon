@@ -76,14 +76,14 @@ function checkNow(callback) {
 		if ($(process.env.SELECTOR).length > 0) {
 			log('POSITIVE');
 			if (currentState !== true) {
-				discChan.send('Selector matched');
+				discChan.send(process.env.POSITIVE_MSG);
 				log('Selector matched');
 			}
 			currentState = true;
 		} else {
 			log('NEGATIVE');
 			if (currentState !== false) {
-				discChan.send('Selector no longer matches');
+				discChan.send(process.env.NEGATIVE_MSG);
 				log('Selector no longer matches');
 			}
 			currentState = false;
